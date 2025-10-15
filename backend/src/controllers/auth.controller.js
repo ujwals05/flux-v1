@@ -1,8 +1,8 @@
-import express from "express";
-import { APIerror } from "../utils/apierror";
-import { User } from "../models/user.model";
+import { APIerror } from "../utils/apierror.js";
+import { APIresponse } from "../utils/apiresponse.js";
+import { User } from "../models/user.model.js";
 
-const register = async (req, res) => {
+export const register = async (req, res) => {
   try {
     const { username, email, password, fullname } = req.body;
 
@@ -24,8 +24,16 @@ const register = async (req, res) => {
       password,
     });
 
-    const userInfo = await User.findById(user._id).select("-password -");
+    const userInfo = await User.findById(user._id).select("-password");
+
+    if (!userInfo) {
+      throw new APIerror(400, "User data didnt save into database");
+    }
+    res
+      .status(200)
+      .json(new APIresponse(200, userInfo, "Register successfully"));
   } catch (error) {
     console.log("Error while register", error);
+    res.json(error);
   }
 };

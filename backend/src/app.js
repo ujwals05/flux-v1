@@ -10,10 +10,10 @@ app.use(
 );
 
 app.use(express.json({ limit: "16kb" }));
-app.use(express.urlencoded({ limit: "16kb" }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-import authRouth from "./routers/auth.router";
+import authRouth from "./routers/auth.router.js";
 
 app.use("/api/v1/users", authRouth);
 
