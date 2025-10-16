@@ -1,9 +1,9 @@
 class APIerror extends Error {
-  constructor(statusCode, message, error = [], stack = "") {
+  constructor(statusCode, message, errors = [], stack = "") {
     super(message);
-    this.statusCode = statusCode;
     this.message = message;
-    this.error = error;
+    this.statusCode = statusCode;
+    this.errors = errors;
     this.data = false;
     this.success = false;
     if (stack) this.stack = stack;
@@ -11,4 +11,4 @@ class APIerror extends Error {
   }
 }
 
-export {APIerror}
+export { APIerror };
