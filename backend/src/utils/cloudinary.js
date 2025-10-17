@@ -1,5 +1,10 @@
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
+import dotenv from "dotenv";
+
+dotenv.config({
+  path: "../../.env",
+});
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -12,7 +17,7 @@ const cloudUpload = async (localpath) => {
     if (!localpath) return null;
     const result = await cloudinary.uploader.upload(localpath);
     // console.log(result);
-    fs.unlinkSync(localpath);
+    // fs.unlinkSync(localpath);
     return result;
   } catch (error) {
     console.log("Error while uploading photo", error);
