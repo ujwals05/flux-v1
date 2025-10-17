@@ -19,4 +19,5 @@ import authRouth from "./routers/auth.router.js";
 
 app.use("/api/v1/users", authRouth);
 
+
 export default app;
