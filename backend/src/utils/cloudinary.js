@@ -17,7 +17,7 @@ const cloudUpload = async (localpath) => {
     if (!localpath) return null;
     const result = await cloudinary.uploader.upload(localpath);
     // console.log(result);
-    // fs.unlinkSync(localpath);
+    fs.unlinkSync(localpath);
     return result;
   } catch (error) {
     console.log("Error while uploading photo", error);
