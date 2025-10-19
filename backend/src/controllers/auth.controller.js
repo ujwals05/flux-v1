@@ -47,8 +47,6 @@ export const register = async (req, res) => {
       .status(200)
       .json(new APIresponse(200, userInfo, "Register successfully"));
   } catch (error) {
-    console.log("Error while register", error);
-
     if (error instanceof APIerror) {
       return res.status(error.statusCode).json({
         success: false,
@@ -78,8 +76,7 @@ export const login = async (req, res) => {
     if (!validPassword) throw new APIerror(400, "Incorrect password ");
 
     const { accessToken, refreshToken } = await generateTokens(user._id);
-    console.log(accessToken);
-
+  
     const userLogin = await User.findById(user._id).select(
       "-password -refreshToken"
     );
@@ -95,6 +92,7 @@ export const login = async (req, res) => {
       .cookie("refreshToken", refreshToken, options)
       .json(new APIresponse(200, userLogin, "Login successfully"));
   } catch (error) {
+    console.log(error);
     if (error instanceof APIerror) {
       return res.status(error.statusCode).json({
         success: false,
@@ -112,7 +110,7 @@ export const login = async (req, res) => {
 
 export const logout = async (req, res) => {
   try {
-    await User.findByIdAndDelete(
+    await User.findByIdAndUpdate(
       req.user._id,
       {
         $set: {
@@ -135,7 +133,6 @@ export const logout = async (req, res) => {
       .clearCookie("accessToken", options)
       .json(new APIresponse(200, {}, "User logged out successfully"));
   } catch (error) {
-    console.log("Error while logout", error);
     // throw new APIerror(404, "Invlaid creditials");
     if (error instanceof APIerror) {
       return res.status(error.statusCode).json({
@@ -276,5 +273,15 @@ export const updateProfile = async (req, res) => {
       success: false,
       message: "Error while updating profile",
     });
+  }
+};
+
+export const currentUser = async (req, res) => {
+  try {
+    return res
+      .status(200)
+      .json(new APIresponse(200, req.user, "Current user displayed"));
+  } catch (error) {
+    console.log("No user exist", error);
   }
 };
