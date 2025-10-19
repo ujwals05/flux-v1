@@ -22,8 +22,19 @@ const verifyJWT = async (req, res, next) => {
     req.user = user;
     next();
   } catch (error) {
-    console.log("Error while login", error);
-    throw new APIerror(401, error?.message || "No proper authorization");
+    // console.log("Error while login", error);
+    // throw new APIerror(401, error?.message || "No proper authorization");
+    if (error instanceof APIerror) {
+      return res.status(error.statusCode).json({
+        success: false,
+        message: error.message,
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      message: "Erro while logout",
+    });
   }
 };
 
