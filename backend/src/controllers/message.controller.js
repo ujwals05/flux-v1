@@ -72,7 +72,7 @@ export const getMessages = async (req, res) => {
 export const sendMessage = async (req, res) => {
   try {
     const { text } = req.body;
-    const { id: receiverID } = req.params;
+    const { id: reciverID } = req.params;
     const senderID = req.user._id;
 
     if (!text && !req.file) {
@@ -87,16 +87,16 @@ export const sendMessage = async (req, res) => {
     }
 
     // Create and save message
-    const newMessage = await Message.create({
+    const newMessage = new Message({
       senderID,
-      receiverID,
+      reciverID,
       text: text || "",
       image: uploadImage?.url || "",
     });
 
-    // Optionally: populate sender or receiver if you need it on the frontend
-    // const populatedMessage = await newMessage.populate("senderID receiverID", "username profilePic");
+    await newMessage.save();
 
+    //Todo : Real time functionality goes here => socket.io
     return res
       .status(200)
       .json(new APIresponse(200, newMessage, "Message sent successfully"));

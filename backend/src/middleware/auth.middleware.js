@@ -31,9 +31,9 @@ const verifyJWT = async (req, res, next) => {
       });
     }
 
-    res.status(500).json({
+    res.status(401).json({
       success: false,
-      message: "Erro while logout",
+      message: "No creditenials",
     });
   }
 };
