@@ -2,7 +2,6 @@ import { APIerror } from "../utils/apierror.js";
 import { APIresponse } from "../utils/apiresponse.js";
 import { User } from "../models/user.model.js";
 import cloudUpload from "../utils/cloudinary.js";
-import profileFunction from "../utils/profile.js";
 import jwt from "jsonwebtoken";
 
 const generateTokens = async (userID) => {
@@ -29,13 +28,13 @@ export const register = async (req, res) => {
     if (userExist) {
       throw new APIerror(400, "User already exist");
     }
-    const photo = await profileFunction();
+    // const photo = await profileFunction();
     const user = await User.create({
       username: username.toLowerCase(),
       fullname,
       email,
       password,
-      profilePic: photo.url,
+      profilePic: "",
     });
 
     const userInfo = await User.findById(user._id).select("-password");
@@ -76,7 +75,7 @@ export const login = async (req, res) => {
     if (!validPassword) throw new APIerror(400, "Incorrect password ");
 
     const { accessToken, refreshToken } = await generateTokens(user._id);
-  
+
     const userLogin = await User.findById(user._id).select(
       "-password -refreshToken"
     );
@@ -242,8 +241,8 @@ export const updateProfilePic = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
   try {
-    const { fullname, email } = req.body;
-    if (!fullname || !email) {
+    const { fullname } = req.body;
+    if (!fullname) {
       throw new APIerror(400, "ALl the field are required");
     }
 
@@ -252,7 +251,6 @@ export const updateProfile = async (req, res) => {
       {
         $set: {
           fullname: fullname,
-          email: email,
         },
       },
       { new: true }
