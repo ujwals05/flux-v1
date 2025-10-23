@@ -16,6 +16,8 @@ import AboutUs from "./pages/AboutUs.jsx";
 import { useAuthStore } from "./store/useAuthStore.js";
 import { useThemeStore } from "./store/useThemeStore.js";
 
+import LoaderAnimate from "./components/LoaderAnimate.jsx";
+
 function App() {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
   const { theme } = useThemeStore();
@@ -23,18 +25,18 @@ function App() {
     checkAuth();
   }, [checkAuth]);
 
-  
-
+  // if (true)
   if (isCheckingAuth && !authUser)
     return (
-      <div className="flex items-center justify-center h-screen ">
-        <Loader className="size-10 animate-spin" />
+      <div data-theme={theme}>
+        {/* <Loader className="size-10 animate-spin" /> */}
+        <LoaderAnimate />
       </div>
     );
 
   console.log({ authUser });
   return (
-    <div   data-theme={theme}>
+    <div data-theme={theme}>
       <Navbar />
       <Routes>
         <Route
