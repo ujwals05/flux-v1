@@ -34,7 +34,7 @@ export const register = async (req, res) => {
       fullname,
       email,
       password,
-      profilePic: "",
+      profilePic: null,
     });
 
     const userInfo = await User.findById(user._id).select("-password");
