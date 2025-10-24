@@ -1,8 +1,9 @@
-import React from 'react'
-
+import About from '../components/AboutUs.jsx'
 const AboutUs = () => {
   return (
-    <div>AboutUs</div>
+    <div>
+      <About/>
+    </div>
   )
 }
 

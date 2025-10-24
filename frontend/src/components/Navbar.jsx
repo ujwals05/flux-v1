@@ -22,7 +22,7 @@ const Navbar = () => {
             <>
               <Link
                 to="/aboutus"
-                className="flex items-center gap-3 px-4 py-2 rounded-lg text-base-content transition-none hover:bg-transparent focus:bg-transparent active:bg-transparent border-none shadow-none"
+                className="flex items-center gap-3 px-4 py-2 rounded-lg text-base-content transition-colors duration-300 hover:text-primary focus:text-primary active:text-primary"
               >
                 About Us
               </Link>
@@ -32,7 +32,10 @@ const Navbar = () => {
           {authUser && (
             <div className="avatar">
               <div className="ring-primary ring-offset-base-100 w-10 rounded-full border-3 border-green-500">
-                <img src={authUser.message.profilePic||"/avatar-icon.png"} className="" />
+                <img
+                  src={authUser.message.profilePic || "/avatar-icon.png"}
+                  className=""
+                />
               </div>
             </div>
           )}
