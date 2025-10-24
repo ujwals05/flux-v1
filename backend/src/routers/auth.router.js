@@ -5,6 +5,7 @@ import {
   logout,
   updateProfilePic,
   currentUser,
+  deleteUser,
 } from "../controllers/auth.controller.js";
 import { verifyJWT } from "../middleware/auth.middleware.js";
 import { upload } from "../middleware/multer.middleware.js";
@@ -18,4 +19,5 @@ authRouth
   .route("/updateProfilePic")
   .post(verifyJWT, upload.single("profilePic"), updateProfilePic);
 authRouth.route("/currentUser").get(verifyJWT, currentUser);
+authRouth.route("/deleteUser").delete(verifyJWT, deleteUser);
 export default authRouth;
