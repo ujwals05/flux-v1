@@ -283,3 +283,35 @@ export const currentUser = async (req, res) => {
     console.log("No user exist", error);
   }
 };
+
+export const deleteUser = async (req, res) => {
+  try {
+    const userId = req.user?._id;
+
+    if (!userId) {
+      throw new APIerror(400, "Current user doesn't exist");
+    }
+
+    const deletedUser = await User.findByIdAndDelete(userId);
+
+    if (!deletedUser) {
+      throw new APIerror(400, "Cannot deletd the user");
+    }
+
+    return res
+      .status(200)
+      .json({ success: true, message: "Successfully deleted user" });
+  } catch (error) {
+    console.error("Error while deleting user:", error);
+    if (error instanceof APIerror) {
+      return res.status(error.statusCode).json({
+        success: false,
+        message: error.message,
+      });
+    }
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
