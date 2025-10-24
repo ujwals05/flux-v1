@@ -10,6 +10,7 @@ It enables secure, responsive, and visually appealing communication between user
 User Authentication (JWT with HTTP-only cookies)  
 Profile Picture Upload using **Cloudinary**  
 Real-time Messaging Experience  
+Online/Offline Presence Indicators
 Image Sharing in Chats  
 Responsive Modern UI (DaisyUI + Tailwind)  
 Toast Notifications for User Feedback  
@@ -53,7 +54,7 @@ Dynamic Theme Support (Light/Dark mode)
   │   │   ├── routers/
   │   │   ├── middleware/
   │   │   ├── utils/
-  │   │   └── index.js        #Entry point for backend
+  │   │   └── index.js    -Entry point for backend
   │   ├── public/
   │   ├── package.json
   │   ├── package-lock.json
@@ -66,7 +67,7 @@ Dynamic Theme Support (Light/Dark mode)
   │   │   ├── pages/
   │   │   ├── store/
   │   │   ├── utils/
-  │   │   ├── App.jsx          # Entry point for frontend
+  │   │   ├── App.jsx     -Entry point for frontend
   │   │   └── index.css
   │   ├── public/
   │   ├── index.html
@@ -75,5 +76,46 @@ Dynamic Theme Support (Light/Dark mode)
   │   ├──.gitignore
   └── README.md
   ```
-  
+  ## Installation & Setup -Locally
 
+  ### Clone the repository
+  ```bash
+  git clone https://github.com/ujwals05/flux-v1.git
+  cd flux-v1
+  ```
+  ### Set-up Backend
+  ```
+  cd backend
+  npm install
+  ```
+  ### Create a .env file in the backend directory:
+  ```
+  PORT=5000
+  MONGO_URI=your_mongodb_connection
+  JWT_SECRET=your_secret_key
+  CLOUDINARY_CLOUD_NAME=your_cloud_name
+  CLOUDINARY_API_KEY=your_api_key
+  CLOUDINARY_API_SECRET=your_api_secret
+  CORS_ORIGIN=http://localhost:5173
+  ```
+  ### Start backend
+  ```
+  npm run dev
+  ```
+
+  ### Set-up Front-end
+  ```
+  cd frontend
+  npm install
+  npm run dev
+  ```
+  ## Pre-view:
+
+
+  ## Upcoming Features (Flux V2)
+  Google / GitHub OAuth Login
+  End-to-End Message Encryption
+  Message Privacy & Security Enhancements
+  File & Video Sharing
+  AI-Powered Smart Replies
+  Group Chats
