@@ -18,7 +18,7 @@ const About = () => {
           className="mx-auto sm:w-70 sm:h-40 mb-4 object-contain"
         />
         <p className="text-base-content/70 text-sm sm:text-base max-w-2xl mx-auto">
-          <strong>Flux v1</strong> is a secure and intelligent messaging
+          <strong>Flux </strong> is a secure and intelligent messaging
           experience built with the{" "}
           <span className="text-primary">MERN stack</span>, designed to adapt
           with your theme — sleek, fast, and reliable.
@@ -106,7 +106,7 @@ const About = () => {
           >
             Ujwal
           </a>{" "}
-          | Flux v1
+          | Flux
         </p>
       </motion.div>
     </div>
