@@ -33,7 +33,7 @@ const About = () => {
         className="w-full max-w-4xl bg-base-100 border border-base-300 shadow-xl rounded-3xl p-8 relative overflow-hidden"
       >
         {/* Decorative Gradient Glow */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-secondary/10 blur-3xl -z-10"></div>
+        <div className="absolute inset-0  from-primary/10 to-secondary/10 blur-3xl -z-10"></div>
 
         {/* Features Section */}
         <div className="grid sm:grid-cols-2 gap-6">
