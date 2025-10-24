@@ -1,4 +1,3 @@
-import React from "react";
 import { useState } from "react";
 import { useAuthStore } from "../store/useAuthStore.js";
 import { Camera, Mail, User, IdCard } from "lucide-react";
