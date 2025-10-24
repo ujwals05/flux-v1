@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import Navbar from "./components/Navbar.jsx";
 
 import { Routes, Route, Navigate } from "react-router-dom";
-import { Loader } from "lucide-react";
 import { Toaster } from "react-hot-toast";
 
 import HomePage from "./pages/HomePage.jsx";
