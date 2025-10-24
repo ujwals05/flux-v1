@@ -10,9 +10,10 @@ export const useAuthStore = create((set) => ({
   isUpdatingProfile: false,
   // isUpdatingProfilePic: false,
   isCheckingAuth: true,
+  isDeletingUser: false,
 
-  onlineUsers : [],
-  
+  onlineUsers: [],
+
   checkAuth: async () => {
     try {
       const res = await axiosInstance.get("/users/currentUser");
@@ -47,7 +48,7 @@ export const useAuthStore = create((set) => ({
       toast.success("Successfully logged in");
     } catch (error) {
       console.log("Error while login", error);
-      toast.error(error.response.data.message)
+      toast.error(error.response.data.message);
     } finally {
       set({ isLoggingIn: false });
     }
@@ -81,6 +82,20 @@ export const useAuthStore = create((set) => ({
       toast.error(error.response?.data?.message || "Error updating profile");
     } finally {
       set({ isUpdatingProfile: false });
+    }
+  },
+
+  deleteUser: async () => {
+    set({ isDeletingUser: true });
+    try {
+      const res = await axiosInstance.delete("/users/deleteUser");
+      set({ authUser: null });
+      toast.success("Successfully deleted account");
+    } catch (error) {
+      console.log("Error while deleting user", error);
+      toast.error(error.response?.data?.message || "Error deleting user");
+    } finally {
+      set({ isDeletingUser: true });
     }
   },
 

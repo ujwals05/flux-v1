@@ -3,8 +3,17 @@ import { useAuthStore } from "../store/useAuthStore.js";
 import { Camera, Mail, User, IdCard } from "lucide-react";
 
 const ProfilePage = () => {
-  const { authUser, updateProfilePic, updateProfile, isUpdatingProfile } =
-    useAuthStore();
+  const {
+    authUser,
+    updateProfilePic,
+    updateProfile,
+    isUpdatingProfile,
+    deleteUser,
+    isDeletingUser,
+  } = useAuthStore();
+
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  
   const [selectedImg, setSelectedImg] = useState(null);
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
@@ -119,6 +128,54 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
+      <div className="mt-6 bg-base-300 rounded-xl p-6">
+        <h2 className="text-lg font-medium mb-4 text-red-500">Danger Zone</h2>
+        <p className="text-sm text-red-400 mb-4">
+          Deleting your account is permanent and cannot be undone. All your
+          messages and profile data will be lost.
+        </p>
+        <button
+          onClick={() => setShowDeleteModal(true)}
+          className={`w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg transition-all`}
+        >
+          Delete Account
+        </button>
+      </div>
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+          <div className="bg-base-100 rounded-xl p-6 w-full max-w-md shadow-lg">
+            <h3 className="text-lg font-semibold text-red-500 mb-4">
+              Confirm Deletion
+            </h3>
+            <p className="text-sm text-base-content/80 mb-6">
+              Are you sure you want to delete your account? This action cannot
+              be undone.
+            </p>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className="px-4 py-2 rounded-lg border border-base-300 hover:bg-base-200 transition"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={async () => {
+                  await deleteUser();
+                  setShowDeleteModal(false);
+                }}
+                className={`px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition ${
+                  isDeletingUser ? "opacity-60 cursor-not-allowed" : ""
+                }`}
+                disabled={isDeletingUser}
+              >
+                {isDeletingUser ? "Deleting..." : "Delete"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
