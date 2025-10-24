@@ -119,7 +119,7 @@ const ChatContainer = () => {
           }`}
                 >
                   {message.text && (
-                    <p className="break-words">{message.text}</p>
+                    <p className="">{message.text}</p>
                   )}
                   {message.image && (
                     <img
