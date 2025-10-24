@@ -40,3 +40,40 @@ Dynamic Theme Support (Light/Dark mode)
 - Bcrypt (Password Hashing)
 - CORS + Cookie Parser
 - Dotenv for Environment Variables
+
+  ## Folder Structure
+  ```
+  flux-v1/
+  │
+  ├── backend/
+  │   ├── src/
+  │   │   ├── controllers/
+  │   │   ├── db/
+  │   │   ├── models/
+  │   │   ├── routers/
+  │   │   ├── middleware/
+  │   │   ├── utils/
+  │   │   └── index.js        #Entry point for backend
+  │   ├── public/
+  │   ├── package.json
+  │   ├── package-lock.json
+  │   └── README.md
+  ├── frontend/
+  │   ├── src/
+  │   │   ├── components/
+  │   │   ├── constan
+  │   │   ├── assets/
+  │   │   ├── pages/
+  │   │   ├── store/
+  │   │   ├── utils/
+  │   │   ├── App.jsx          # Entry point for frontend
+  │   │   └── index.css
+  │   ├── public/
+  │   ├── index.html
+  │   ├── package.json
+  │   ├── package-lock.json
+  │   ├──.gitignore
+  └── README.md
+  ```
+  
+
