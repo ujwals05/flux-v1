@@ -113,9 +113,10 @@ Dynamic Theme Support (Light/Dark mode)
 
 
   ## Upcoming Features (Flux V2)
-  Google / GitHub OAuth Login
-  End-to-End Message Encryption
-  Message Privacy & Security Enhancements
-  File & Video Sharing
-  AI-Powered Smart Replies
-  Group Chats
+  - Google / GitHub OAuth Login
+  - End-to-End Message Encryption
+  - Message Privacy & Security Enhancements
+  - File & Video Sharing
+  - AI-Powered Smart Replies
+  - Group Chats
+  - Community
