@@ -32,7 +32,7 @@ const Navbar = () => {
           {authUser && (
             <div className="avatar">
               <div className="ring-primary ring-offset-base-100 w-10 rounded-full border-3 border-green-500">
-                <img src={authUser.message.profilePic} className="" />
+                <img src={authUser.message.profilePic||"/avatar-icon.png"} className="" />
               </div>
             </div>
           )}
