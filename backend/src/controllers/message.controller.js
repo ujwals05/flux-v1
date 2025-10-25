@@ -3,6 +3,8 @@ import { User } from "../models/user.model.js";
 import { APIerror } from "../utils/apierror.js";
 import { APIresponse } from "../utils/apiresponse.js";
 import cloudUpload from "../utils/cloudinary.js";
+import { getReceiverSocketId } from "../utils/socket.js";
+import { io } from "../utils/socket.js";
 
 export const getUserForSidebar = async (req, res) => {
   try {
@@ -97,6 +99,12 @@ export const sendMessage = async (req, res) => {
     await newMessage.save();
 
     //Todo : Real time functionality goes here => socket.io
+    const reciverSocketId = getReceiverSocketId(reciverID);
+    if(reciverSocketId){
+      io.to(reciverSocketId).emit("newMessage",newMessage)
+    }
+
+
     return res
       .status(200)
       .json(new APIresponse(200, newMessage, "Message sent successfully"));
