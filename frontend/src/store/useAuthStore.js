@@ -1,9 +1,11 @@
 import { create } from "zustand";
 import { axiosInstance } from "../utils/axios.js";
 import toast from "react-hot-toast";
-import axios from "axios";
+import { io } from "socket.io-client";
 
-export const useAuthStore = create((set) => ({
+const BASE_URL = "http://localhost:8001/";
+
+export const useAuthStore = create((set, get) => ({
   authUser: null,
   isSigningUp: false,
   isLoggingIn: false,
@@ -11,6 +13,7 @@ export const useAuthStore = create((set) => ({
   // isUpdatingProfilePic: false,
   isCheckingAuth: true,
   isDeletingUser: false,
+  socket: null,
 
   onlineUsers: [],
 
@@ -18,6 +21,7 @@ export const useAuthStore = create((set) => ({
     try {
       const res = await axiosInstance.get("/users/currentUser");
       set({ authUser: res.data });
+      get().connectSocket();
     } catch (error) {
       set({ authUser: null });
       console.log("error occured:", error);
@@ -46,6 +50,7 @@ export const useAuthStore = create((set) => ({
       const res = await axiosInstance.post("/users/login", data);
       set({ authUser: res.data });
       toast.success("Successfully logged in");
+      get().connectSocket();
     } catch (error) {
       console.log("Error while login", error);
       toast.error(error.response.data.message);
@@ -59,6 +64,7 @@ export const useAuthStore = create((set) => ({
       await axiosInstance.post("/users/logout");
       set({ authUser: null });
       toast.success("Successfully Logged out");
+      get().disconnectSocket();
     } catch (error) {
       console.log("Error while logout", error);
       toast.error(error.response.message.data);
@@ -91,12 +97,26 @@ export const useAuthStore = create((set) => ({
       const res = await axiosInstance.delete("/users/deleteUser");
       set({ authUser: null });
       toast.success("Successfully deleted account");
+      get().disconnectSocket();
     } catch (error) {
       console.log("Error while deleting user", error);
       toast.error(error.response?.data?.message || "Error deleting user");
     } finally {
       set({ isDeletingUser: true });
     }
+  },
+
+  connectSocket: () => {
+    const { authUser } = get();
+    if (!authUser || get().socket?.connected) return;
+
+    const socket = io(BASE_URL);
+    socket.connect();
+    set({ socket: socket });
+  },
+
+  disconnectSocket: () => {
+    if (get().socket?.connected) get().socket.disconnect();
   },
 
   updateProfile: async () => {},

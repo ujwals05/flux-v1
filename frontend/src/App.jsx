@@ -20,6 +20,7 @@ import LoaderAnimate from "./components/LoaderAnimate.jsx";
 function App() {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
   const { theme } = useThemeStore();
+
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
@@ -33,7 +34,7 @@ function App() {
       </div>
     );
 
-  console.log({ authUser });
+  // console.log({ authUser });
   return (
     <div data-theme={theme}>
       <Navbar />
