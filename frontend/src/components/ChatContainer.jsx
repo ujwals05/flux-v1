@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useChatStore } from "../store/useChatStore.js";
 import ChatHeader from "./ChatHeader.jsx";
 import MessageInput from "./MessageInput.jsx";
@@ -6,13 +6,36 @@ import MessageSkeleton from "./MessageSkeleton.jsx";
 import { useAuthStore } from "../store/useAuthStore.js";
 
 const ChatContainer = () => {
-  const { getMessages, isMessageLoading, messages, selectedUser } =
-    useChatStore();
+  const {
+    getMessages,
+    isMessageLoading,
+    messages,
+    selectedUser,
+    SubscribeToMessage,
+    unSubscribeToMessage,
+  } = useChatStore();
 
   const { authUser } = useAuthStore();
+
+  // 🧩 Ref to the messages container
+  const messageContainerRef = useRef(null);
+
+  // Fetch messages & subscribe to socket
   useEffect(() => {
     getMessages(selectedUser._id);
-  }, [selectedUser._id, getMessages]);
+    SubscribeToMessage();
+    return () => unSubscribeToMessage();
+  }, [selectedUser._id, getMessages, SubscribeToMessage, unSubscribeToMessage]);
+
+  // 🔥 Auto-scroll to bottom when new messages arrive
+  useEffect(() => {
+    if (messageContainerRef.current) {
+      messageContainerRef.current.scrollTo({
+        top: messageContainerRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+  }, [messages]);
 
   if (isMessageLoading)
     return (
@@ -22,55 +45,16 @@ const ChatContainer = () => {
         <MessageInput />
       </div>
     );
+
   return (
     <div className="flex-1 flex flex-col overflow-auto">
       <ChatHeader />
 
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {/* {messages.map((message) => (
-          <div
-            key={message._id}
-            className={`chat ${
-              message.senderID === authUser.message._id
-                ? "chat-end"
-                : "chat-start"
-            }`}
-          >
-            <div className={`chat-image avatar`}>
-              <div className="size-10 rounded-full border">
-                <img
-                  src={
-                    message.senderID === authUser.message._id
-                      ? authUser.message.profilePic || "/avatar-icon.png"
-                      : selectedUser.profilePic || "/avatar-icon.png"
-                  }
-                  alt="profilePic"
-                />
-              </div>
-            </div>
-
-            <div className="chat-header mb-1">
-              <div className="text-[10px] text-right opacity-70 mt-1">
-                {new Date(message.createdAt).toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </div>
-            </div>
-
-            <div className="chat-bubble flex">
-              {message.image && (
-                <img
-                  src={message.image}
-                  alt="Attachment"
-                  className="sm:max-w-[200px] rounded-md mb-2"
-                />
-              )}
-              {message.text && <p>{message.text}</p>}
-            </div>
-          </div>
-        ))} */}
-
+      {/* ✅ Added ref here */}
+      <div
+        ref={messageContainerRef}
+        className="flex-1 overflow-y-auto p-4 space-y-4"
+      >
         {messages.map((message) => {
           const isSent = message.senderID === authUser.message._id;
           const time = new Date(message.createdAt).toLocaleTimeString([], {
@@ -112,15 +96,13 @@ const ChatContainer = () => {
                 {/* Chat bubble */}
                 <div
                   className={`flex flex-col max-w-xs sm:max-w-sm p-2 sm:p-3 rounded-lg shadow-md 
-          ${
-            isSent
-              ? "bg-primary text-primary-content rounded-tr-none"
-              : "bg-base-200 text-base-content rounded-tl-none"
-          }`}
+            ${
+              isSent
+                ? "bg-primary text-primary-content rounded-tr-none"
+                : "bg-base-200 text-base-content rounded-tl-none"
+            }`}
                 >
-                  {message.text && (
-                    <p className="">{message.text}</p>
-                  )}
+                  {message.text && <p className="">{message.text}</p>}
                   {message.image && (
                     <img
                       src={message.image}
@@ -142,7 +124,7 @@ const ChatContainer = () => {
                 )}
               </div>
 
-              {/* Timestamp below the bubble, aligned to the same side as the bubble */}
+              {/* Timestamp below the bubble */}
               <span
                 className={`text-[10px] opacity-70 mt-1 ${
                   isSent ? "self-end" : "self-start"
