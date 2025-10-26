@@ -124,28 +124,28 @@ Dynamic Theme Support (Light/Dark mode)
 
   ## Pre-view:
 
-  <h2 >Application Previews</h2>
+      <h2 >Application Previews</h2>
 
-<p>
-  <img src="./preview/signup.jpg" alt="Home Page" width="800" align="center" />
   <em>Sign Up page</em>
-</p>
-
-<p align="center">
-  <img src="./preview/aboutus.jpg" alt="Login Page" width="800"/>
-</p>
-
-<p align="center">
-  <img src="./preview/profile.jpg" alt="Dashboard" width="800"/>
-</p>
-
-<p align="center">
-  <img src="./preview/messages.jpg" alt="Chat Page" width="800"/>
-</p>
-
-<p align="center">
-  <img src="./preview/settings.jpg" alt="Profile Page" width="800"/>
-</p>
+    <p align="center">
+      <img src="./preview/signup.jpg" alt="Home Page" width="800" align="center" />
+      </p>
+  <em>About Us</em>
+  <p align="center">
+    <img src="./preview/aboutus.jpg" alt="Login Page" width="800"/>
+  </p>
+  <em>Profile Page</em>
+  <p align="center">
+    <img src="./preview/profile.jpg" alt="Dashboard" width="800"/>
+  </p>
+  <em>Home Page</em>
+  <p align="center">
+    <img src="./preview/messages.jpg" alt="Chat Page" width="800"/>
+  </p>
+  <em>Settings</em>
+  <p align="center">
+    <img src="./preview/settings.jpg" alt="Profile Page" width="800"/>
+  </p>
 
 ## Upcoming Features (Flux V2)
 
