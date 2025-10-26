@@ -124,10 +124,11 @@ Dynamic Theme Support (Light/Dark mode)
 
   ## Pre-view:
 
-  <h2 align="center">🖼️ Application Previews</h2>
+  <h2 >Application Previews</h2>
 
 <p align="center">
   <img src="./preview/signup.jpg" alt="Home Page" width="800"/>
+  <em>Sign Up page</em>
 </p>
 
 <p align="center">
