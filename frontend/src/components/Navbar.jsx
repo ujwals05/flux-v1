@@ -30,13 +30,20 @@ const Navbar = () => {
           )}
 
           {authUser && (
-            <div className="avatar">
-              <div className="ring-primary ring-offset-base-100 w-10 rounded-full border-3 border-green-500">
-                <img
-                  src={authUser.message.profilePic || "/avatar-icon.png"}
-                  className=""
-                />
+            <div className="flex items-center gap-3 me-4">
+              {/* Profile Picture */}
+              <div className="avatar">
+                <div className="ring-primary ring-offset-base-100 w-10 rounded-full border-3 border-green-500 overflow-hidden">
+                  <img
+                    src={authUser.message.profilePic || "/avatar-icon.png"}
+                    alt="Profile"
+                  />
+                </div>
               </div>
+              {/* Name */}
+              <p className="font-medium text-base text-base-content">
+                {authUser.message.fullname}
+              </p>
             </div>
           )}
 
