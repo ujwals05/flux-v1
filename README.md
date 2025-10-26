@@ -126,8 +126,8 @@ Dynamic Theme Support (Light/Dark mode)
 
   <h2 >Application Previews</h2>
 
-<p align="center">
-  <img src="./preview/signup.jpg" alt="Home Page" width="800"/>
+<p>
+  <img src="./preview/signup.jpg" alt="Home Page" width="800" align="center" />
   <em>Sign Up page</em>
 </p>
 
