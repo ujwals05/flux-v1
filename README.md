@@ -5,7 +5,7 @@ It enables secure, responsive, and visually appealing communication between user
 
 ---
 
-##  Features
+## Features
 
 User Authentication (JWT with HTTP-only cookies)  
 Profile Picture Upload using **Cloudinary**  
@@ -22,6 +22,7 @@ Dynamic Theme Support (Light/Dark mode)
 ## Tech Stack
 
 ### **Frontend**
+
 - React 19 (Vite)
 - Tailwind CSS + DaisyUI
 - Framer Motion (Animations)
@@ -33,6 +34,7 @@ Dynamic Theme Support (Light/Dark mode)
 - Lucide React (Icon Library)
 
 ### **Backend**
+
 - Node.js + Express
 - MongoDB + Mongoose
 - JSON Web Tokens (JWT)
@@ -43,6 +45,7 @@ Dynamic Theme Support (Light/Dark mode)
 - Dotenv for Environment Variables
 
   ## Folder Structure
+
   ```
   flux-v1/
   │
@@ -76,19 +79,25 @@ Dynamic Theme Support (Light/Dark mode)
   │   ├──.gitignore
   └── README.md
   ```
+
   ## Installation & Setup -Locally
 
   ### Clone the repository
+
   ```bash
   git clone https://github.com/ujwals05/flux-v1.git
   cd flux-v1
   ```
+
   ### Set-up Backend
+
   ```
   cd backend
   npm install
   ```
+
   ### Create a .env file in the backend directory:
+
   ```
   PORT=5000
   MONGO_URI=your_mongodb_connection
@@ -98,25 +107,51 @@ Dynamic Theme Support (Light/Dark mode)
   CLOUDINARY_API_SECRET=your_api_secret
   CORS_ORIGIN=http://localhost:5173
   ```
+
   ### Start backend
+
   ```
   npm run dev
   ```
 
   ### Set-up Front-end
+
   ```
   cd frontend
   npm install
   npm run dev
   ```
+
   ## Pre-view:
 
+  <h2 align="center">🖼️ Application Previews</h2>
 
-  ## Upcoming Features (Flux V2)
-  - Google / GitHub OAuth Login
-  - End-to-End Message Encryption
-  - Message Privacy & Security Enhancements
-  - File & Video Sharing
-  - AI-Powered Smart Replies
-  - Group Chats
-  - Community
+<p align="center">
+  <img src="./preview/signup.jpg" alt="Home Page" width="800"/>
+</p>
+
+<p align="center">
+  <img src="./preview/aboutus.jpg" alt="Login Page" width="800"/>
+</p>
+
+<p align="center">
+  <img src="./preview/profile.jpg" alt="Dashboard" width="800"/>
+</p>
+
+<p align="center">
+  <img src="./preview/messages.jpg" alt="Chat Page" width="800"/>
+</p>
+
+<p align="center">
+  <img src="./preview/settings.jpg" alt="Profile Page" width="800"/>
+</p>
+
+## Upcoming Features (Flux V2)
+
+- Google / GitHub OAuth Login
+- End-to-End Message Encryption
+- Message Privacy & Security Enhancements
+- File & Video Sharing
+- AI-Powered Smart Replies
+- Group Chats
+- Community
