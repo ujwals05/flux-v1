@@ -36,13 +36,13 @@ app.use("/api/v1/users", authRouth);
 app.use("/api/v1/message", messageRoute);
 
 if (process.env.NODE_ENV === "production") {
-  // Serve React build files
-  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+    const frontendPath = path.join(__dirname, "../../frontend/dist");
 
-  // Catch-all route for React Router
-  app.use((req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
-  });
+    app.use(express.static(frontendPath));
+
+    app.get("*", (req, res) => {
+      res.sendFile(path.resolve(frontendPath, "index.html"));
+    });
 }
 
 export default app;
