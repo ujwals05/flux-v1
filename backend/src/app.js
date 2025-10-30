@@ -3,11 +3,13 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import { app } from "./utils/socket.js";
-
+import path from "path";
 
 dotenv.config({
   path: "./.env",
 });
+
+const __dirname = path.resolve();
 
 app.use(
   cors({
@@ -18,7 +20,7 @@ app.use(
 
 app.use(express.json({ limit: "16kb" }));
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static("public"));
+// app.use(express.static("public"));
 app.use(cookieParser());
 // app.use(
 //   cors({
@@ -32,5 +34,13 @@ import messageRoute from "./routers/message.route.js";
 
 app.use("/api/v1/users", authRouth);
 app.use("/api/v1/message", messageRoute);
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../frontend", "dist", "index.js"));
+  });
+}
 
 export default app;

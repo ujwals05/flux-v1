@@ -1,0 +1,21 @@
+{
+  "name": "flux",
+  "version": "1.0.0",
+  "description": "Flux V1 is a **real-time communication platform** built using the **MERN stack** with a modern UI powered by **Tailwind CSS** and **DaisyUI**.  \r It enables secure, responsive, and visually appealing communication between users, featuring **JWT authentication**, **image sharing**, and **cloud-based media storage**.",
+  "homepage": "https://github.com/ujwals05/flux-v1#readme",
+  "bugs": {
+    "url": "https://github.com/ujwals05/flux-v1/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ujwals05/flux-v1.git"
+  },
+  "license": "ISC",
+  "author": "ujwal s",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "build":"npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend",
+    "start":"npm run start --prefix backend"
+  }
+}
