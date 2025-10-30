@@ -36,7 +36,7 @@ app.use("/api/v1/users", authRouth);
 app.use("/api/v1/message", messageRoute);
 
 if (process.env.NODE_ENV === "production") {
-    const frontendPath = path.join(__dirname, "../../frontend/dist");
+    const frontendPath = path.join(__dirname, "../frontend/dist");
 
     app.use(express.static(frontendPath));
 
