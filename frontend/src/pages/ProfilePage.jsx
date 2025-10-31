@@ -45,7 +45,7 @@ const ProfilePage = () => {
               <img
                 src={
                   selectedImg ||
-                  authUser.message.profilePic ||
+                  authUser.profilePic ||
                   "/avatar-icon.png"
                 }
                 alt="Profile"
@@ -89,7 +89,7 @@ const ProfilePage = () => {
                 User name
               </div>
               <p className="px-4 py-2.5 bg-base-200 rounded-lg border">
-                {authUser?.message.username}
+                {authUser?.username}
               </p>
             </div>
             <div className="space-y-1.5">
@@ -98,7 +98,7 @@ const ProfilePage = () => {
                 Full Name
               </div>
               <p className="px-4 py-2.5 bg-base-200 rounded-lg border">
-                {authUser?.message.fullname}
+                {authUser?.fullname}
               </p>
             </div>
 
@@ -108,7 +108,7 @@ const ProfilePage = () => {
                 Email Address
               </div>
               <p className="px-4 py-2.5 bg-base-200 rounded-lg border">
-                {authUser?.message.email}
+                {authUser?.email}
               </p>
             </div>
           </div>
@@ -118,7 +118,7 @@ const ProfilePage = () => {
             <div className="space-y-3 text-sm">
               <div className="flex items-center justify-between py-2 border-b border-zinc-700">
                 <span>Member Since</span>
-                <span>{authUser.message.createdAt?.split("T")[0]}</span>
+                <span>{authUser?.createdAt?.split("T")[0]}</span>
               </div>
               <div className="flex items-center justify-between py-2">
                 <span>Account Status</span>

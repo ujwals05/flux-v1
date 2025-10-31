@@ -40,6 +40,7 @@ function App() {
   return (
     <div data-theme={theme}>
       <Navbar />
+      {console.log(authUser)}
       <Routes>
         <Route
           path="/"

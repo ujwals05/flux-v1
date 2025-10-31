@@ -21,7 +21,7 @@ export const useAuthStore = create((set, get) => ({
   checkAuth: async () => {
     try {
       const res = await axiosInstance.get("/users/currentUser");
-      set({ authUser: res.data });
+      set({ authUser: res.message });
       get().connectSocket();
     } catch (error) {
       set({ authUser: null });
@@ -35,7 +35,7 @@ export const useAuthStore = create((set, get) => ({
     set({ isSigningUp: true });
     try {
       const res = await axiosInstance.post("/users/signup", data);
-      // set({ authUser: res.data });
+      set({ authUser: res.data });
       toast.success("Account created successfully! Please log in.");
     } catch (error) {
       console.log("Error occured while signup", error);
@@ -49,11 +49,12 @@ export const useAuthStore = create((set, get) => ({
     set({ isLoggingIn: true });
     try {
       const res = await axiosInstance.post("/users/login", data);
-      set({ authUser: res.data });
+      console.log(res);
+      set({ authUser: res.data.message });
       toast.success("Successfully logged in");
       get().connectSocket();
     } catch (error) {
-      console.log("Error while login", error);
+      console.log("Error while login");
       toast.error(error.response.data.message);
     } finally {
       set({ isLoggingIn: false });
@@ -82,7 +83,7 @@ export const useAuthStore = create((set, get) => ({
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-      set({ authUser: res.data });
+      set({ authUser: res.data.message });
       toast.success("Profile updated successfully");
     } catch (error) {
       console.log("Error while updating profile", error);

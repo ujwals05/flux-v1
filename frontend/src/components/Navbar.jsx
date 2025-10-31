@@ -35,14 +35,14 @@ const Navbar = () => {
               <div className="avatar">
                 <div className="ring-primary ring-offset-base-100 w-10 rounded-full border-3 border-green-500 overflow-hidden">
                   <img
-                    src={authUser.message.profilePic || "/avatar-icon.png"}
+                    src={authUser.profilePic || "/avatar-icon.png"}
                     alt="Profile"
                   />
                 </div>
               </div>
               {/* Name */}
               <p className="font-medium text-base text-base-content">
-                {authUser.message.fullname}
+                {authUser.fullname}
               </p>
             </div>
           )}
