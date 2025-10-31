@@ -14,6 +14,7 @@ const generateTokens = async (userID) => {
   return { accessToken, refreshToken };
 };
 
+
 export const register = async (req, res) => {
   try {
     const { username, email, password, fullname } = req.body;
@@ -25,10 +26,11 @@ export const register = async (req, res) => {
     const userExist = await User.findOne({
       $or: [{ username }, { email }],
     });
+
     if (userExist) {
-      throw new APIerror(400, "User already exist");
+      throw new APIerror(400, "User already exists");
     }
-    // const photo = await profileFunction();
+
     const user = await User.create({
       username: username.toLowerCase(),
       fullname,
@@ -40,11 +42,12 @@ export const register = async (req, res) => {
     const userInfo = await User.findById(user._id).select("-password");
 
     if (!userInfo) {
-      throw new APIerror(400, "User data didnt save into database");
+      throw new APIerror(400, "User data didn't save into database");
     }
+
     res
       .status(200)
-      .json(new APIresponse(200, userInfo, "Register successfully"));
+      .json(new APIresponse(200, "Register successfully", userInfo));
   } catch (error) {
     if (error instanceof APIerror) {
       return res.status(error.statusCode).json({
@@ -55,24 +58,26 @@ export const register = async (req, res) => {
 
     res.status(500).json({
       success: false,
-      message: "INTERNAL SERVER ERROR",
+      message: "Internal Server Error",
     });
   }
 };
+
 
 export const login = async (req, res) => {
   try {
     const { username, password, email } = req.body;
     if (!username || !password || !email)
-      throw new APIerror(400, "All field are required");
+      throw new APIerror(400, "All fields are required");
 
     const user = await User.findOne({
       $or: [{ username }, { email }],
     });
+
     if (!user) throw new APIerror(400, "User does not exist");
 
     const validPassword = await user.isPasswordCorrect(password);
-    if (!validPassword) throw new APIerror(400, "Incorrect password ");
+    if (!validPassword) throw new APIerror(400, "Incorrect password");
 
     const { accessToken, refreshToken } = await generateTokens(user._id);
 
@@ -81,17 +86,19 @@ export const login = async (req, res) => {
     );
 
     const options = {
-      secure: true,
       httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      path: "/",
     };
 
     res
       .status(200)
       .cookie("accessToken", accessToken, options)
       .cookie("refreshToken", refreshToken, options)
-      .json(new APIresponse(200, userLogin, "Login successfully"));
+      .json(new APIresponse(200, "Login successfully", userLogin));
   } catch (error) {
-    console.log(error);
+    console.error(error);
     if (error instanceof APIerror) {
       return res.status(error.statusCode).json({
         success: false,
@@ -101,38 +108,35 @@ export const login = async (req, res) => {
 
     res.status(500).json({
       success: false,
-      message: "INTERNAL SERVER ERROR",
+      message: "Internal Server Error",
     });
-    // throw new APIerror(401, error?.message || "Error while login");
   }
 };
+
 
 export const logout = async (req, res) => {
   try {
     await User.findByIdAndUpdate(
       req.user._id,
       {
-        $set: {
-          refreshToken: undefined,
-        },
+        $set: { refreshToken: undefined },
       },
-      {
-        new: true,
-      }
+      { new: true }
     );
 
     const options = {
       httpOnly: true,
-      secured: true,
+      secure: true,
+      sameSite: "none",
+      path: "/",
     };
 
     res
-      .status(200)
       .clearCookie("refreshToken", options)
       .clearCookie("accessToken", options)
-      .json(new APIresponse(200, {}, "User logged out successfully"));
+      .status(200)
+      .json(new APIresponse(200, "User logged out successfully", {}));
   } catch (error) {
-    // throw new APIerror(404, "Invlaid creditials");
     if (error instanceof APIerror) {
       return res.status(error.statusCode).json({
         success: false,
@@ -142,10 +146,11 @@ export const logout = async (req, res) => {
 
     res.status(500).json({
       success: false,
-      message: "Erro while logout",
+      message: "Error while logout",
     });
   }
 };
+
 
 export const refreshAccessToken = async (req, res) => {
   try {
@@ -163,27 +168,29 @@ export const refreshAccessToken = async (req, res) => {
     if (!user) {
       throw new APIerror(400, "Invalid refresh token");
     }
-    if (incomingToken != user.refreshToken) {
-      throw new APIerror(400, "Refresh token didnt match");
+
+    if (incomingToken !== user.refreshToken) {
+      throw new APIerror(400, "Refresh token didn't match");
     }
 
-    const options = {
-      httpOnly: true,
-      secured: true,
-    };
-
-    const { accessToken, refreshToken } = generateTokens(user._id);
+    const { accessToken, refreshToken } = await generateTokens(user._id);
     const userInfo = await User.findById(user._id).select(
       "-password -refreshToken"
     );
+
+    const options = {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      path: "/",
+    };
 
     res
       .status(200)
       .cookie("accessToken", accessToken, options)
       .cookie("refreshToken", refreshToken, options)
-      .json(new APIresponse(200, userInfo, "Token refreshed successfully"));
+      .json(new APIresponse(200, "Token refreshed successfully", userInfo));
   } catch (error) {
-    // console.log("Error while refreshing access token :", error);
     if (error instanceof APIerror) {
       return res.status(error.statusCode).json({
         success: false,
@@ -198,33 +205,27 @@ export const refreshAccessToken = async (req, res) => {
   }
 };
 
+
 export const updateProfilePic = async (req, res) => {
   try {
     const profilePath = req.file?.path;
     if (!profilePath) {
-      throw new APIerror(400, "No path exist");
+      throw new APIerror(400, "No path exists");
     }
 
     const uploading = await cloudUpload(profilePath);
 
     const user = await User.findByIdAndUpdate(
       req.user._id,
-      {
-        $set: {
-          profilePic: uploading.url,
-        },
-      },
-      {
-        new: true,
-      }
+      { $set: { profilePic: uploading.url } },
+      { new: true }
     ).select("-password -refreshToken");
 
     return res
       .status(200)
-      .json(new APIresponse(200, user, "Profile pic updated "));
+      .json(new APIresponse(200, "Profile pic updated successfully", user));
   } catch (error) {
-    console.log("Error while updating profile", error);
-    // throw new APIerror(400, error?.message || "Error while updating profile");
+    console.error("Error while updating profile:", error);
     if (error instanceof APIerror) {
       return res.status(error.statusCode).json({
         success: false,
@@ -239,27 +240,25 @@ export const updateProfilePic = async (req, res) => {
   }
 };
 
+
 export const updateProfile = async (req, res) => {
   try {
     const { fullname } = req.body;
     if (!fullname) {
-      throw new APIerror(400, "ALl the field are required");
+      throw new APIerror(400, "All fields are required");
     }
 
     const user = await User.findByIdAndUpdate(
       req.user?._id,
-      {
-        $set: {
-          fullname: fullname,
-        },
-      },
+      { $set: { fullname } },
       { new: true }
     ).select("-password");
+
     return res
       .status(200)
-      .json(new APIresponse(200, user, "User updated successfully"));
+      .json(new APIresponse(200, "User updated successfully", user));
   } catch (error) {
-    console.log("Error while updating profile", error);
+    console.error("Error while updating profile:", error);
     if (error instanceof APIerror) {
       return res.status(error.statusCode).json({
         success: false,
@@ -274,15 +273,17 @@ export const updateProfile = async (req, res) => {
   }
 };
 
+
 export const currentUser = async (req, res) => {
   try {
     return res
       .status(200)
-      .json(new APIresponse(200, req.user, "Current user displayed"));
+      .json(new APIresponse(200, "Current user displayed", req.user));
   } catch (error) {
-    console.log("No user exist", error);
+    console.error("No user exist:", error);
   }
 };
+
 
 export const deleteUser = async (req, res) => {
   try {
@@ -295,12 +296,12 @@ export const deleteUser = async (req, res) => {
     const deletedUser = await User.findByIdAndDelete(userId);
 
     if (!deletedUser) {
-      throw new APIerror(400, "Cannot deletd the user");
+      throw new APIerror(400, "Cannot delete the user");
     }
 
     return res
       .status(200)
-      .json({ success: true, message: "Successfully deleted user" });
+      .json(new APIresponse(200, "Successfully deleted user", {}));
   } catch (error) {
     console.error("Error while deleting user:", error);
     if (error instanceof APIerror) {
@@ -309,6 +310,7 @@ export const deleteUser = async (req, res) => {
         message: error.message,
       });
     }
+
     return res.status(500).json({
       success: false,
       message: "Internal server error",
