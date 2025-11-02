@@ -21,7 +21,6 @@ function App() {
   const { authUser, checkAuth, isCheckingAuth, onlineUsers } = useAuthStore();
   const { theme } = useThemeStore();
 
-  console.log(onlineUsers)
 
   useEffect(() => {
     checkAuth();
@@ -40,7 +39,6 @@ function App() {
   return (
     <div data-theme={theme}>
       <Navbar />
-      {console.log(authUser)}
       <Routes>
         <Route
           path="/"

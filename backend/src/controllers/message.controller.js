@@ -23,7 +23,7 @@ export const getUserForSidebar = async (req, res) => {
       .status(200)
       .json(new APIresponse(200, filterUsers, "Got users from database"));
   } catch (error) {
-    console.log("Error while getting users");
+    // console.log("Error while getting users");
     if (error instanceof APIerror) {
       return res.status(error.statusCode).json({
         success: false,
