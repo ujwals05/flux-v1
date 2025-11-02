@@ -6,7 +6,7 @@ import { io } from "socket.io-client";
 const BASE_URL =
   import.meta.env.MODE === "development"
     ? "http://localhost:8001"
-    : "https://flux-backend.vercel.app";
+    : "https://flux-backend-orpin.vercel.app/";
 
 export const useAuthStore = create((set, get) => ({
   authUser: null,
