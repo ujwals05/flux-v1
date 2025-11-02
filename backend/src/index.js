@@ -16,3 +16,4 @@ connectDB()
   .catch((error) => {
     console.log("Error in the server side:", error);
   });
+ 
