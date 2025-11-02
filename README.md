@@ -59,6 +59,7 @@ Dynamic Theme Support (Light/Dark mode)
   │   │   ├── utils/
   │   │   └── index.js    -Entry point for backend
   │   ├── public/
+  │   ├── vercel.json
   │   ├── package.json
   │   ├── package-lock.json
   │   └── README.md
@@ -99,13 +100,20 @@ Dynamic Theme Support (Light/Dark mode)
   ### Create a .env file in the backend directory:
 
   ```
-  PORT=5000
-  MONGO_URI=your_mongodb_connection
-  JWT_SECRET=your_secret_key
-  CLOUDINARY_CLOUD_NAME=your_cloud_name
-  CLOUDINARY_API_KEY=your_api_key
-  CLOUDINARY_API_SECRET=your_api_secret
-  CORS_ORIGIN=http://localhost:5173
+  PORT = 8001
+  MONGO_DB = mongodb_url
+  CORS_ORIGIN = http://localhost:5173
+
+  ACCESS_TOKEN_SECRET = your_access_token
+  ACCESS_TOKEN_EXPIRY = 1d
+
+  REFRESH_TOKEN_SECRET = your_refresh_token
+  REFRESH_TOKEN_EXPIRY = 10d
+  CLOUDINARY_NAME = name
+  CLOUDINARY_API = API_KEY
+  CLOUDINARY_SECRET = SECRET_KEY
+
+  NODE_ENV = development
   ```
 
   ### Start backend
