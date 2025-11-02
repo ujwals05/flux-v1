@@ -31,10 +31,16 @@ const SignUpPage = () => {
     e.preventDefault();
     const success = validateForm();
     if (success === true) {
-      await signup(formData);
-      navigate("/login");
+      try {
+        await signup(formData);
+        toast.success("Account created successfully! Please log in.");
+        navigate("/login");
+      } catch (error) {
+        toast.error(error.message || "Signup failed. Try again.");
+      }
     }
   };
+
 
   return (
     <div className="min-h-screen grid lg:grid-cols-2">
