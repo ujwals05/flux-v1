@@ -1,11 +1,12 @@
 import { useRef, useState } from "react";
 import { useChatStore } from "../store/useChatStore";
-import { Image, Send, X } from "lucide-react";
+import { Image, Send, X, Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
 
 const MessageInput = () => {
   const [text, setText] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
+  const [isSending, setIsSending] = useState(false); // 🌀 Loading state
   const fileInputRef = useRef(null);
   const { sendMessage } = useChatStore();
 
@@ -37,6 +38,7 @@ const MessageInput = () => {
     e.preventDefault();
     if (!text.trim() && !imagePreview) return;
 
+    setIsSending(true); // Start loading
     try {
       await sendMessage({
         text: text.trim(),
@@ -49,6 +51,9 @@ const MessageInput = () => {
       if (fileInputRef.current) fileInputRef.current.value = "";
     } catch (error) {
       console.error("Failed to send message:", error);
+      toast.error("Failed to send message");
+    } finally {
+      setIsSending(false); // Stop loading
     }
   };
 
@@ -67,6 +72,7 @@ const MessageInput = () => {
               onClick={removeImage}
               type="button"
               className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-base-300 flex items-center justify-center"
+              disabled={isSending}
             >
               <X className="size-3" />
             </button>
@@ -83,6 +89,7 @@ const MessageInput = () => {
             placeholder="Type a message..."
             value={text}
             onChange={(e) => setText(e.target.value)}
+            disabled={isSending}
           />
 
           <input
@@ -91,6 +98,7 @@ const MessageInput = () => {
             className="hidden"
             ref={fileInputRef}
             onChange={handleImageChange}
+            disabled={isSending}
           />
 
           <button
@@ -99,6 +107,7 @@ const MessageInput = () => {
             className={`hidden sm:flex btn btn-circle ${
               imagePreview ? "text-emerald-500" : "text-zinc-400"
             }`}
+            disabled={isSending}
           >
             <Image size={20} />
           </button>
@@ -106,10 +115,16 @@ const MessageInput = () => {
 
         <button
           type="submit"
-          className="btn btn-sm btn-circle"
-          disabled={!text.trim() && !imagePreview}
+          className={`btn btn-sm btn-circle ${
+            isSending ? "opacity-70 cursor-not-allowed" : ""
+          }`}
+          disabled={isSending || (!text.trim() && !imagePreview)}
         >
-          <Send size={22} />
+          {isSending ? (
+            <Loader2 className="animate-spin" size={20} />
+          ) : (
+            <Send size={22} />
+          )}
         </button>
       </form>
     </div>

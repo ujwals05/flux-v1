@@ -56,17 +56,17 @@ const ChatContainer = () => {
         className="flex-1 overflow-y-auto p-4 space-y-4"
       >
         {messages.map((message) => {
-          const isSent = message.senderID === authUser.message._id;
+          const isSent = message.senderID === authUser._id;
           const time = new Date(message.createdAt).toLocaleTimeString([], {
             hour: "2-digit",
             minute: "2-digit",
           });
 
           const senderName = isSent
-            ? authUser.message.fullname
+            ? authUser.fullname
             : selectedUser.fullname;
           const avatarSrc = isSent
-            ? authUser.message.profilePic || "/avatar-icon.png"
+            ? authUser.profilePic || "/avatar-icon.png"
             : selectedUser.profilePic || "/avatar-icon.png";
 
           return (
