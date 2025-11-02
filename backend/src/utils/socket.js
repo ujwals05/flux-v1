@@ -7,13 +7,13 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:5173"],
+    origin: ["http://localhost:5173", "https://flux-chat-lovat.vercel.app"],
     methods: ["GET", "POST"],
   },
 });
 
-export function getReceiverSocketId(userId){
-  return userSocketMap[userId]
+export function getReceiverSocketId(userId) {
+  return userSocketMap[userId];
 }
 
 // Store mapping: userId → socket.id
