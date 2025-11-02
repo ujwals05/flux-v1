@@ -1,33 +1,39 @@
+// src/utils/cloudinary.js
 import { v2 as cloudinary } from "cloudinary";
-import fs from "fs";
+import streamifier from "streamifier";
 import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
 dotenv.config({ path: path.join(__dirname, "../../.env") });
 
-
+// configure Cloudinary (env vars must be set in Vercel)
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_NAME,
-  api_key: process.env.CLOUDINARY_API,
-  api_secret: process.env.CLOUDINARY_SECRET,
+  cloud_name: process.env.CLOUDINARY_NAME || process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API || process.env.CLOUDINARY_API_KEY,
+  api_secret:
+    process.env.CLOUDINARY_SECRET || process.env.CLOUDINARY_API_SECRET,
 });
 
-
-const cloudUpload = async (localpath) => {
-  try {
-    if (!localpath) return null;
-    const result = await cloudinary.uploader.upload(localpath);
-    // console.log(result);
-    fs.unlinkSync(localpath);
-    return result;
-  } catch (error) {
-    console.log("Error while uploading photo", error);
-    fs.unlinkSync(localpath);
-  }
+/**
+ * Upload a Buffer to Cloudinary via upload_stream.
+ * @param {Buffer} fileBuffer
+ * @param {string} folder optional folder name
+ * @returns {Promise<Object>} Cloudinary result
+ */
+const cloudUpload = (fileBuffer, folder = "uploads") => {
+  return new Promise((resolve, reject) => {
+    const uploadStream = cloudinary.uploader.upload_stream(
+      { folder, resource_type: "auto" },
+      (error, result) => {
+        if (error) return reject(error);
+        resolve(result);
+      }
+    );
+    streamifier.createReadStream(fileBuffer).pipe(uploadStream);
+  });
 };
 
 export default cloudUpload;

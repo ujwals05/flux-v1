@@ -81,43 +81,37 @@ export const sendMessage = async (req, res) => {
       throw new APIerror(400, "No message or image to send");
     }
 
-    // Upload image if provided
-    let uploadImage = null;
-    const imageLocalPath = req.file?.path;
-    if (imageLocalPath) {
-      uploadImage = await cloudUpload(imageLocalPath);
+    let uploadedUrl = "";
+    if (req.file) {
+      const result = await cloudUpload(req.file.buffer, "chat_images");
+      uploadedUrl = result?.secure_url || "";
     }
 
-    // Create and save message
     const newMessage = new Message({
       senderID,
       reciverID,
       text: text || "",
-      image: uploadImage?.url || "",
+      image: uploadedUrl,
     });
 
     await newMessage.save();
 
-    //Todo : Real time functionality goes here => socket.io
     const reciverSocketId = getReceiverSocketId(reciverID);
-    if(reciverSocketId){
-      io.to(reciverSocketId).emit("newMessage",newMessage)
+    if (reciverSocketId) {
+      io.to(reciverSocketId).emit("newMessage", newMessage);
     }
-
 
     return res
       .status(200)
       .json(new APIresponse(200, newMessage, "Message sent successfully"));
   } catch (error) {
     console.error("Error while sending message:", error);
-
     if (error instanceof APIerror) {
       return res.status(error.statusCode).json({
         success: false,
         message: error.message,
       });
     }
-
     res.status(500).json({
       success: false,
       message: error?.message || "Error while sending message",

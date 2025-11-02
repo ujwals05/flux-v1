@@ -1,21 +1,27 @@
+// import multer from "multer";
+// import path from "path";
+// import fs from "fs";
+
+// const uploadPath = path.join(process.cwd(), "public/temp");
+
+// // ensure the folder exists
+// if (!fs.existsSync(uploadPath)) {
+//   fs.mkdirSync(uploadPath, { recursive: true });
+// }
+
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, uploadPath);
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, Date.now() + "-" + file.originalname);
+//   },
+// });
+
+// export const upload = multer({ storage });
+
 import multer from "multer";
-import path from "path";
-import fs from "fs";
 
-const uploadPath = path.join(process.cwd(), "public/temp");
-
-// ensure the folder exists
-if (!fs.existsSync(uploadPath)) {
-  fs.mkdirSync(uploadPath, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, uploadPath);
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname);
-  },
-});
+const storage = multer.memoryStorage(); 
 
 export const upload = multer({ storage });

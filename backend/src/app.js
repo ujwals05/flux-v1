@@ -10,14 +10,14 @@ dotenv.config({
 
 app.use(
   cors({
-    origin: [process.env.CORS_ORIGIN],
+    origin: ["http://localhost:5173", "https://flux-chat-lovat.vercel.app"],
     credentials: true,
   })
 );
 
 app.use(express.json({ limit: "16kb" }));
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static("public"));
+// app.use(express.static("public"));
 app.use(cookieParser());
 
 
